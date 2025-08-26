@@ -9,16 +9,20 @@ This repository contains automated end-to-end tests for the **Urban Routes** web
 urban_routes_test/
 │
 ├── main.py          # Main test file containing all test logic
+├── pages.py        # Contains all localizators and functionalities
+├── helpers.py      # Contain a function for retrieving a code of verification
 ├── README.md        # Project documentation
-├── requirements.txt # Python dependencies (not included by default)
+
 ```
 
 ## 🧪 Test Overview
 
 All the automated tests are defined in `main.py`, structured into two main classes:
 
-- `UrbanRoutesPage`: Contains the page object model (POM) logic — locators and methods to interact with UI elements.
 - `TestUrbanRoutes`: Contains the test case that simulates a user ordering a taxi, step-by-step.
+
+## 🧪 File pages.py with class UrbanRoutesPage 
+- `UrbanRoutesPage`: Contains the page object model (POM) logic — locators and methods to interact with UI elements.
 
 ## ✅ Test Scenario – "Order a Taxi"
 
