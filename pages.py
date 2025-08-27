@@ -10,7 +10,7 @@ class UrbanRoutesPage:
     to_field = (By.ID, 'to')
     button_taxi = (By.XPATH, '//button[text()="Pedir un taxi"]')
     element_comfort = (By.XPATH, '//div[normalize-space(text())="Comfort"]')
-    tag_comfort = (By.CSS_SELECTOR, '')
+    tag_comfort = (By.CSS_SELECTOR, "div.tcard.active .tcard-title")
     element_number = (By.CLASS_NAME, 'np-text')
     phone_box = (By.ID, 'phone')
     next_button_number = (By.XPATH, '//button[text()="Siguiente"]')
@@ -25,11 +25,13 @@ class UrbanRoutesPage:
     comment_section = (By.ID, 'comment')
     requirements_section = (By.CLASS_NAME, 'reqs-head')
     request_1 = (By.CSS_SELECTOR, "span.slider.round")
+    switch_activated = (By.CSS_SELECTOR, ".switch-input")
     icecream_request = (By.CSS_SELECTOR, "div.counter-plus")
     icecream_counter = (By.CSS_SELECTOR, "div.counter-value")
     blanket_tissues = (By.CSS_SELECTOR, "input.switch-input")
     order_taxi_button = (By.CLASS_NAME, 'smart-button-main')
-    driver_info = (By.XPATH, "//div[text()='driver.name.1']")
+    driver_info = (By.XPATH, "/html/body/div/div/div[5]/div[2]/div[2]/div[1]/div[1]/div[2]")
+    driver_tuple = (By.XPATH, "/html/body/div/div/div[5]/div[2]/div[2]/div[1]/div[1]/div[2]")
 
 
     def __init__(self, driver):
@@ -105,11 +107,16 @@ class UrbanRoutesPage:
         return self.driver.find_element(*self.comment_section).get_property('value')
 
     # Toggle some extra ride requirements
-    def set_requests(self):
+    def set_requests_1(self):
         wait = WebDriverWait(self.driver, 2)
         req_section = wait.until(EC.presence_of_element_located(self.requirements_section))
         self.driver.execute_script("arguments[0].scrollIntoView(true);", req_section)
         self.driver.find_element(*self.request_1).click()
+
+    def set_requests_icecream(self):
+        wait = WebDriverWait(self.driver, 2)
+        req_section = wait.until(EC.presence_of_element_located(self.requirements_section))
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", req_section)
         self.driver.find_element(*self.icecream_request).click()
         self.driver.find_element(*self.icecream_request).click()
 
@@ -120,8 +127,11 @@ class UrbanRoutesPage:
         return button.text
 
     # Click order button and wait for the driver info to appear
-    def wait_for_driver(self):
+    def click_on_order_taxi(self):
         self.driver.find_element(*self.order_taxi_button).click()
-        WebDriverWait(self.driver, 30).until(
-            EC.visibility_of_element_located(*self.driver_info)
-        )
+
+    def wait_driver(self):
+        driver_info_element = WebDriverWait(self.driver, 45).until(
+            EC.visibility_of_element_located(self.driver_info))
+        name = driver_info_element.text
+        return name
